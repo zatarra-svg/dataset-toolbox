@@ -12,7 +12,7 @@ A dataset toolbox for preparing and analyzing conversational datasets, including
 
 ```bash
 python -m venv venv
-source venv/bin/activate        # Windows: venv\Scripts\activate
+source venv/bin/activate # Windows: venv\Scripts\activate
 git clone https://github.com/mookiezi/dataset-toolbox
 cd dataset-toolbox
 pip install -U pip
