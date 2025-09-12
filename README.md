@@ -103,6 +103,89 @@ No more batches left. Exiting.
 
 > Configure `PGUSER` and `DB` at the top of the script for your environment.
 
+Here are the new parts for your README, in the **exact same format** as the rest so you can copy-paste them in:
+
+---
+
+### `dropcols.py`
+
+Remove identifier columns from a CSV quickly using Polars.
+
+-   Drops `id`, `guild_id`, and `channel_id` if present.
+-   Skips malformed rows with `ignore_errors=True`.
+-   Writes a new `_pure.csv` file alongside the input.
+
+**Usage:**
+
+```bash
+python dropcols.py -p mydata.csv
+```
+
+**Output:**
+
+```text
+Saved without id, guild_id, and channel_id → mydata_pure.csv
+```
+
+---
+
+### `tokens.py`
+
+Generate detailed token statistics for a CSV dataset.
+
+-   Tokenizes the `text` column in batches using Hugging Face tokenizer (default: Hermes-3-Llama-3.1-8B).
+-   Computes descriptive stats (min, max, mean, median, std, skew, kurtosis, percentiles, histograms).
+-   Counts assistant message blocks (ChatML or DeepHermes markers).
+-   Logs results to `<stem>_tokenstats.txt`.
+
+**Usage:**
+
+```bash
+python tokens.py -p mydata.csv
+```
+
+**Output (excerpt):**
+
+```text
+Stats for text:
+  min: 3
+  max: 2048
+  mean: 87.3
+  median: 74.0
+  std: 56.1
+  ...
+  assistant_blocks: 25
+
+Total tokens across all columns: 15,382,921
+Total assistant blocks: 142,883
+```
+
+---
+
+### `combineall.py`
+
+Combine multiple CSV files into one large CSV safely.
+
+-   Recursively finds all `.csv` files in a folder.
+-   Estimates safe chunksize based on available RAM, or accepts `--chunksize`.
+-   Streams files in chunks to avoid OOM errors.
+-   Shows Rich progress (files processed, elapsed time, ETA).
+
+**Usage:**
+
+```bash
+python combineall.py -p data_folder -o combined.csv --max-mem-gb 32
+```
+
+**Output:**
+
+```text
+Auto chunksize based on 32GB RAM: 250000 rows
+Found 12 CSV files. Combining into combined.csv
+Combining ██████████████ 12/12 • 00:55 • 00:00
+Combined CSV saved to combined.csv
+```
+
 ---
 
 ## Requirements
@@ -125,12 +208,15 @@ transformers
 
 ---
 
-| File             | Purpose                                                                                                                                             | Example Usage                                                                                          |
-| ---------------- | --------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------ |
-| **`chains.sh`**  | Batch insert reply chains into PostgreSQL using recursive CTEs. Deduplicates, merges turns, and writes to `chains` table.                           | `chmod +x chains.sh && chains.sh` (**Edit `PGUSER` and `DB` inside script.**)                          |
-| **`stats.py`**   | Compute token counts and dataset statistics (tokens, turns, chars, words). Uses Hugging Face tokenizer with batch processing and Rich progress bar. | `python stats.py -p mydata.csv -m NousResearch/Hermes-3-Llama-3.1-8B -b 1024<br>` → `mydata_stats.csv` |
-| **`par.py`**     | Convert CSV → Parquet with Zstandard compression. Skips malformed lines, prompts before overwrite.                                                  | `python par.py -p mydata.csv -o mydata.parquet<br>`                                                    |
-| **`parjson.py`** | Generate Hugging Face–style `dataset_infos.json` from a Parquet file. Reads metadata only (no full load).                                           | `python parjson.py -p train.parquet -o dataset_infos.json<br>`                                         |
+| File                | Purpose                                                                                                                                             | Example Usage                                                                                      |
+| ------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
+| **`chains.sh`**     | Batch insert reply chains into PostgreSQL using recursive CTEs. Deduplicates, merges turns, and writes to `chains` table.                           | `chmod +x chains.sh && ./chains.sh` (**Edit `PGUSER` and `DB` inside script.**)                    |
+| **`stats.py`**      | Compute token counts and dataset statistics (tokens, turns, chars, words). Uses Hugging Face tokenizer with batch processing and Rich progress bar. | `python stats.py -p mydata.csv -m NousResearch/Hermes-3-Llama-3.1-8B -b 1024` → `mydata_stats.csv` |
+| **`par.py`**        | Convert CSV → Parquet with Zstandard compression. Skips malformed lines, prompts before overwrite.                                                  | `python par.py -p mydata.csv -o mydata.parquet`                                                    |
+| **`parjson.py`**    | Generate Hugging Face–style `dataset_infos.json` from a Parquet file. Reads metadata only (no full load).                                           | `python parjson.py -p train.parquet -o dataset_infos.json`                                         |
+| **`dropcols.py`**   | Remove identifier columns (`id`, `guild_id`, `channel_id`) from a CSV. Writes a new `_pure.csv` file alongside the input.                           | `python dropcols.py -p mydata.csv` → `mydata_pure.csv`                                             |
+| **`tokens.py`**     | Generate detailed token statistics for a CSV (`text` col). Computes descriptive stats, histograms, assistant blocks, and saves a log file.          | `python tokens.py -p mydata.csv` → `mydata_tokenstats.txt`                                         |
+| **`combineall.py`** | Recursively combine multiple CSVs into one. Estimates safe chunksize by RAM, streams in batches, shows Rich progress bar.                           | `python combineall.py -p data_folder -o combined.csv --max-mem-gb 32`                              |
 
 ---
 
