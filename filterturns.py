@@ -34,8 +34,8 @@ import os
 
 parser = argparse.ArgumentParser(description="Turn statistics generator")
 parser.add_argument("-p", "--path", required=True, help="Path to CSV file")
-parser.add_argument("-min", "--min", type=int, required=True, help="Path to CSV file")
-parser.add_argument("-max", "--max", type=int, required=True, help="Path to CSV file")
+parser.add_argument("-min", "--min", type=int, required=True, help="Min turns to keep")
+parser.add_argument("-max", "--max", type=int, required=True, help="Max turns to keep")
 args = parser.parse_args()
 args.path = os.path.splitext(args.path)[0]
 

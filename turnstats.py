@@ -28,9 +28,8 @@ from rich.console import Console
 from rich.table import Table
 import os
 import argparse
-import os
 
-parser = argparse.ArgumentParser(description="Token statistics generator")
+parser = argparse.ArgumentParser(description="Generate statistics on <|im_start|> blocks")
 parser.add_argument("-p", "--path", required=True, help="Path to CSV file")
 args = parser.parse_args()
 args.path = os.path.splitext(args.path)[0]
