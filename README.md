@@ -20,9 +20,9 @@ Compute token counts and basic stats for a CSV dataset.
 python stats.py -p mydata.csv -m NousResearch/Hermes-3-Llama-3.1-8B -b 1024
 ```
 
-````
-
+```
 Output → `mydata_stats.csv`
+```
 
 ---
 
@@ -38,6 +38,12 @@ Convert CSV → Parquet with Zstandard compression.
 
 ```bash
 python par.py -p mydata.csv -o mydata.parquet
+```
+
+**Output:**
+
+```text
+[ok]Saved 176,131 rows → mydata.parquet
 ```
 
 ---
@@ -56,6 +62,22 @@ Generate a Hugging Face–style `dataset_infos.json` from a Parquet file.
 python parjson.py -p train.parquet -o dataset_infos.json
 ```
 
+**Output:**
+
+```text
+Generated dataset_infos.json
+──────────────────────────────────────────
+Field              Value
+──────────────────────────────────────────
+Rows (num_examples)   N examples
+Size (bytes)          N bytes
+Column name           id
+Config                default
+Split                 train
+──────────────────────────────────────────
+[ok]Wrote: dataset_infos.json
+```
+
 ---
 
 ### `chains.sh`
@@ -72,6 +94,17 @@ Batch insert reply chains into PostgreSQL.
 ```bash
 chmod +x chains.sh
 ./chains.sh
+```
+
+**Output (per batch):**
+
+```text
+🚀 Starting batched chain insert runner...
+Running batch 12...
+📦 Finished batch in 95s
+Running batch 13...
+📦 Finished batch in 102s
+No more batches left. Exiting.
 ```
 
 > Configure `PGUSER` and `DB` at the top of the script for your environment.
@@ -113,4 +146,7 @@ transformers
 ## License
 
 This project is licensed under the terms of the MIT [LICENSE](LICENSE).
-````
+
+```
+
+```
