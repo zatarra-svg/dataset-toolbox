@@ -6,6 +6,73 @@ A small toolbox for preparing and analyzing conversational datasets. Includes ut
 
 ## Features
 
+### `chains.sh`
+
+Batch insert reply chains into PostgreSQL.
+
+-   Uses recursive CTEs to build two-author chains.
+-   Deduplicates messages, merges same-author turns.
+-   Tracks batch progress in `root_id_progress`.
+-   Inserts results into a `chains` table in ChatML format.
+
+**Usage:**
+
+```bash
+chmod +x chains.sh
+./chains.sh
+```
+
+**Output (per batch):**
+
+```text
+🚀 Starting batched chain insert runner...
+Running batch 12...
+📦 Finished batch in 95s
+Running batch 13...
+📦 Finished batch in 102s
+No more batches left. Exiting.
+```
+
+> Configure `PGUSER` and `DB` at the top of the script for your environment.
+
+### `combineall.py`
+
+Combine multiple CSV files into one large CSV safely.
+
+-   Recursively finds all `.csv` files in a folder.
+-   Estimates safe chunksize based on available RAM, or accepts `--chunksize`.
+-   Streams files in chunks to avoid OOM errors.
+-   Shows Rich progress (files processed, elapsed time, ETA).
+
+**Usage:**
+
+```bash
+python combineall.py -p data_folder -o combined.csv --max-mem-gb 32
+```
+
+**Output:**
+
+```text
+Auto chunksize based on 32GB RAM: 250000 rows
+Found 12 CSV files. Combining into combined.csv
+Combining ██████████████ 12/12 • 00:55 • 00:00
+Combined CSV saved to combined.csv
+```
+
+### `dropcols.py`
+
+Remove identifier columns from a CSV quickly using Polars.
+
+-   Drops `id`, `guild_id`, and `channel_id` if present.
+-   Skips malformed rows with `ignore_errors=True`.
+-   Writes a new `_pure.csv` file alongside the input.
+
+**Usage:**
+
+```bash
+python dropcols.py -p mydata.csv
+```
+
 ### `stats.py`
 
 Compute token counts and basic stats for a CSV dataset.
@@ -22,6 +89,26 @@ python stats.py -p mydata.csv -m NousResearch/Hermes-3-Llama-3.1-8B -b 1024
 
 ```
 Output → `mydata_stats.csv`
+
+**Output:**
+
+```text
+Saved without id, guild_id, and channel_id → mydata_pure.csv
+```
+
+### `filterturns.py`
+
+Compute token/turn statistics and filter rows by ChatML message-block count.
+
+-   Counts occurrences of `<|im_start|>` per row to estimate dialogue turns.
+-   Filters rows with counts within `[--min, --max]` inclusive.
+-   Saves a filtered CSV and a histogram PNG.
+-   Exits with error if the input CSV lacks a `text` column.
+
+**Usage:**
+
+```bash
+python turns.py -p mydata.csv --min 2 --max 8
 ```
 
 ### `par.py`
@@ -42,6 +129,49 @@ python par.py -p mydata.csv -o mydata.parquet
 
 ```text
 [ok]Saved 176,131 rows → mydata.parquet
+```
+
+### `sortpar.py`
+
+Rank a Parquet dataset by turns and character count.
+
+-   Computes a `char_count` column from text length.  
+-   Adds a capped character bonus (0–20) scaled between median and 95th percentile.  
+-   Calculates an `effective_turns` value (max of turns vs. 5 + char bonus, capped at 25).  
+-   Creates a composite `sort_score` = effective_turns × 1,000,000 + char_count.  
+-   Sorts by this score and saves a new `_sort.parquet` file.
+
+**Usage:**
+
+```bash
+python sort.py -p train.parquet
+````
+
+**Output:**
+
+```text
+Written sorted dataset to train_sort.parquet
+```
+
+### `cleanpar.py`
+
+Clean a Parquet file by dropping extra columns and restoring original row order.
+
+-   Drops `assistant_turns` and `__index_level_0__` if present.  
+-   Attaches a temporary row index to preserve input order.  
+-   Sorts back to the original order and removes the index.  
+-   Saves as `train.parquet` with Zstandard compression.  
+
+**Usage:**
+
+```bash
+python cleanpar.py -p mydata.parquet
+````
+
+**Output:**
+
+```text
+Wrote train.parquet with 176,131 rows, preserved order.
 ```
 
 ### `parjson.py`
@@ -74,61 +204,6 @@ Split                 train
 [ok]Wrote: dataset_infos.json
 ```
 
-### `chains.sh`
-
-Batch insert reply chains into PostgreSQL.
-
--   Uses recursive CTEs to build two-author chains.
--   Deduplicates messages, merges same-author turns.
--   Tracks batch progress in `root_id_progress`.
--   Inserts results into a `chains` table in ChatML format.
-
-**Usage:**
-
-```bash
-chmod +x chains.sh
-./chains.sh
-```
-
-**Output (per batch):**
-
-```text
-🚀 Starting batched chain insert runner...
-Running batch 12...
-📦 Finished batch in 95s
-Running batch 13...
-📦 Finished batch in 102s
-No more batches left. Exiting.
-```
-
-> Configure `PGUSER` and `DB` at the top of the script for your environment.
-
-Here are the new parts for your README, in the **exact same format** as the rest so you can copy-paste them in:
-
----
-
-### `dropcols.py`
-
-Remove identifier columns from a CSV quickly using Polars.
-
--   Drops `id`, `guild_id`, and `channel_id` if present.
--   Skips malformed rows with `ignore_errors=True`.
--   Writes a new `_pure.csv` file alongside the input.
-
-**Usage:**
-
-```bash
-python dropcols.py -p mydata.csv
-```
-
-**Output:**
-
-```text
-Saved without id, guild_id, and channel_id → mydata_pure.csv
-```
-
----
-
 ### `tokens.py`
 
 Generate detailed token statistics for a CSV dataset.
@@ -158,47 +233,6 @@ Stats for text:
 
 Total tokens across all columns: 15,382,921
 Total assistant blocks: 142,883
-```
-
----
-
-### `combineall.py`
-
-Combine multiple CSV files into one large CSV safely.
-
--   Recursively finds all `.csv` files in a folder.
--   Estimates safe chunksize based on available RAM, or accepts `--chunksize`.
--   Streams files in chunks to avoid OOM errors.
--   Shows Rich progress (files processed, elapsed time, ETA).
-
-**Usage:**
-
-```bash
-python combineall.py -p data_folder -o combined.csv --max-mem-gb 32
-```
-
-**Output:**
-
-```text
-Auto chunksize based on 32GB RAM: 250000 rows
-Found 12 CSV files. Combining into combined.csv
-Combining ██████████████ 12/12 • 00:55 • 00:00
-Combined CSV saved to combined.csv
-```
-
-### `turns.py`
-
-Compute token/turn statistics and filter rows by ChatML message-block count.
-
--   Counts occurrences of `<|im_start|>` per row to estimate dialogue turns.
--   Filters rows with counts within `[--min, --max]` inclusive.
--   Saves a filtered CSV and a histogram PNG.
--   Exits with error if the input CSV lacks a `text` column.
-
-**Usage:**
-
-```bash
-python turns.py -p mydata.csv --min 2 --max 8
 ```
 
 **Output:**
@@ -231,15 +265,17 @@ transformers
 
 ---
 
-| File                | Purpose                                                                                                                                             | Example Usage                                                                                      |
-| ------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
-| **`chains.sh`**     | Batch insert reply chains into PostgreSQL using recursive CTEs. Deduplicates, merges turns, and writes to `chains` table.                           | `chmod +x chains.sh && ./chains.sh` (**Edit `PGUSER` and `DB` inside script.**)                    |
-| **`stats.py`**      | Compute token counts and dataset statistics (tokens, turns, chars, words). Uses Hugging Face tokenizer with batch processing and Rich progress bar. | `python stats.py -p mydata.csv -m NousResearch/Hermes-3-Llama-3.1-8B -b 1024` → `mydata_stats.csv` |
-| **`par.py`**        | Convert CSV → Parquet with Zstandard compression. Skips malformed lines, prompts before overwrite.                                                  | `python par.py -p mydata.csv -o mydata.parquet`                                                    |
-| **`parjson.py`**    | Generate Hugging Face–style `dataset_infos.json` from a Parquet file. Reads metadata only (no full load).                                           | `python parjson.py -p train.parquet -o dataset_infos.json`                                         |
-| **`dropcols.py`**   | Remove identifier columns (`id`, `guild_id`, `channel_id`) from a CSV. Writes a new `_pure.csv` file alongside the input.                           | `python dropcols.py -p mydata.csv` → `mydata_pure.csv`                                             |
-| **`tokens.py`**     | Generate detailed token statistics for a CSV (`text` col). Computes descriptive stats, histograms, assistant blocks, and saves a log file.          | `python tokens.py -p mydata.csv` → `mydata_tokenstats.txt`                                         |
-| **`combineall.py`** | Recursively combine multiple CSVs into one. Estimates safe chunksize by RAM, streams in batches, shows Rich progress bar.                           | `python combineall.py -p data_folder -o combined.csv --max-mem-gb 32`                              |
+| File                | Purpose                                                                                                                                             | Example Usage                                                                             |
+| -------------------  | --------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
+| **`chains.sh`**      | Batch insert reply chains into PostgreSQL using recursive CTEs. Deduplicates, merges turns, and writes to `chains` table.                           | `chmod +x chains.sh && ./chains.sh` (**Edit `PGUSER` and `DB` inside script.**)                  |
+| **`combineall.py`**  | Recursively combine multiple CSVs into one. Estimates safe chunksize by RAM, streams in batches, shows Rich progress bar.                           | `python combineall.py -p data_folder -o combined.csv --max-mem-gb 32`                              |
+| **`dropcols.py`**    | Remove identifier columns (`id`, `guild_id`, `channel_id`) from a CSV. Writes a new `_pure.csv` file alongside the input.                           | `python dropcols.py -p mydata.csv` → `mydata_pure.csv`                                             |
+| **`stats.py`**       | Compute token counts and dataset statistics (tokens, turns, chars, words). Uses Hugging Face tokenizer with batch processing and Rich progress bar. | `python stats.py -p mydata.csv -m NousResearch/Hermes-3-Llama-3.1-8B -b 1024` → `mydata_stats.csv` |
+| **`par.py`**         | Convert CSV → Parquet with Zstandard compression. Skips malformed lines, prompts before overwrite.                                                  | `python par.py -p mydata.csv -o mydata.parquet`                                                    |
+| **`sortpar.py`**     | Rank dataset by turns and character count. Computes char bonus, effective turns, and composite score to sort rows.                                  | `python sort.py -p train.parquet` → `train_sort.parquet`                                           |
+| **`cleanpar.py`**    | Drop unnecessary columns (`assistant_turns`, `__index_level_0__`) from Parquet and restore row order. Writes `train.parquet`.                       | `python cleanpar.py -p mydata.parquet` → `train.parquet`                                           |
+| **`parjson.py`**     | Generate Hugging Face–style `dataset_infos.json` from a Parquet file. Reads metadata only (no full load).                                           | `python parjson.py -p train.parquet -o dataset_infos.json`                                         |
+| **`tokens.py`**      | Generate detailed token statistics for a CSV (`text` col). Computes descriptive stats, histograms, assistant blocks, and saves a log file.          | `python tokens.py -p mydata.csv` → `mydata_tokenstats.txt`                                         |
 
 ---
 
