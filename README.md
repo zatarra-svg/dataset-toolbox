@@ -24,8 +24,6 @@ python stats.py -p mydata.csv -m NousResearch/Hermes-3-Llama-3.1-8B -b 1024
 Output → `mydata_stats.csv`
 ```
 
----
-
 ### `par.py`
 
 Convert CSV → Parquet with Zstandard compression.
@@ -45,8 +43,6 @@ python par.py -p mydata.csv -o mydata.parquet
 ```text
 [ok]Saved 176,131 rows → mydata.parquet
 ```
-
----
 
 ### `parjson.py`
 
@@ -77,8 +73,6 @@ Split                 train
 ──────────────────────────────────────────
 [ok]Wrote: dataset_infos.json
 ```
-
----
 
 ### `chains.sh`
 
