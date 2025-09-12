@@ -1,4 +1,4 @@
-
+#!/usr/bin/env python3
 
 """
 This script converts a CSV file into a Parquet file with Zstandard compression.  
