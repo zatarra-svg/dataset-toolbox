@@ -293,7 +293,11 @@ pip install -r requirements.txt
 ```
 
 > Python **3.10+** recommended.
+>
+> ## Cross-Platform Notes
 
+-   **Unix/macOS**: after `chmod +x script.py`, you can run `./script.py …` thanks to the shebang.
+-   **Windows**: run as `python script.py …`; shebang is ignored by default shell, but code is fully supported.
 
 ---
 
