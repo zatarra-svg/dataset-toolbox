@@ -4,3 +4,5 @@ pyarrow
 rich
 transformers
 matplotlib
+psutil
+numpy
