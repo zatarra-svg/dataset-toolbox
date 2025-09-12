@@ -348,4 +348,5 @@ Histogram saved to: mydata_turn_hist.png
 
 ## License
 
-This project is licensed under the terms of the MIT [license](LICENSE).
+This project is licensed under the **MIT License**.  
+See the [LICENSE](LICENSE) file for details.
