@@ -21,7 +21,6 @@ from rich.theme import Theme
 
 console = Console(theme=Theme({"path": "cyan", "ok": "bold green", "warn": "bold yellow", "err": "bold red"}))
 
-
 def resolve_out_path(in_path: str, out_path: str | None) -> str:
     """
     Return the chosen output path; if -o is omitted/blank, default to '<dir_of_-p>/dataset_infos.json'.
