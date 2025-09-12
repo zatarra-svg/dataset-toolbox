@@ -1,4 +1,7 @@
 # dataset-toolbox
+<p align="center">
+  <img src="https://raw.githubusercontent.com/mookiezi/site/refs/heads/main/Dataset-Toolbox-Header-E.png" alt="Dataset Cleaning Toolkit">
+</p>
 
 A small toolbox for preparing and analyzing conversational datasets, including CSV → Parquet conversion, dataset statistics, dialogue-turn filtering, token and turn analysis, Parquet cleaning and sorting, Hugging Face–style metadata generation, and batched chain insertion into PostgreSQL.
 
