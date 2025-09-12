@@ -1,0 +1,25 @@
+{
+  "default": {
+    "description": "",
+    "citation": "",
+    "homepage": "",
+    "license": "",
+    "features": {
+      "id": {
+        "dtype": "string",
+        "_type": "Value"
+      }
+    },
+    "splits": {
+      "train": {
+        "name": "train",
+        "num_bytes": 10045835,
+        "num_examples": 176131,
+        "dataset_name": "default"
+      }
+    },
+    "download_size": 10045835,
+    "dataset_size": 10045835,
+    "size_in_bytes": 10045835
+  }
+}
