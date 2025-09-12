@@ -1,6 +1,3 @@
-Here’s a full `README.md` you can drop in. It gives the repo structure, explains each script, and shows usage examples:
-
-````markdown
 # datasets-toolbox
 
 A small toolbox for preparing and analyzing conversational datasets.  
@@ -24,6 +21,7 @@ Compute token counts and basic stats for a CSV dataset.
 ```bash
 python stats.py -p mydata.csv -m NousResearch/Hermes-3-Llama-3.1-8B -b 1024
 ```
+
 ````
 
 Output → `mydata_stats.csv`
@@ -116,11 +114,5 @@ transformers
 
 ## License
 
-This project is licensed under the terms of the [LICENSE](LICENSE).
-
-```
-
----
-
-Want me to also generate a **requirements.txt** file with pinned minimal versions (e.g., `pandas>=2.0`, `pyarrow>=14.0`, etc.) so it’s immediately installable?
-```
+This project is licensed under the terms of the MIT [LICENSE](LICENSE).
+````
