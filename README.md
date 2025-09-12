@@ -131,12 +131,12 @@ transformers
 
 ---
 
-| File                    | Purpose                                                                                                                                        | Example Usage                                                                                       |
-| ------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------|
-| **`chains.sh`**          | Batch insert reply chains into PostgreSQL using recursive CTEs. Deduplicates, merges turns, and writes to `chains` table.                           | `chmod +x chains.sh && chains.sh` (**Edit `PGUSER` and `DB` inside script.**)                         |
-| **`stats.py`**           | Compute token counts and dataset statistics (tokens, turns, chars, words). Uses Hugging Face tokenizer with batch processing and Rich progress bar. | `python stats.py -p mydata.csv -m NousResearch/Hermes-3-Llama-3.1-8B -b 1024<br>` → `mydata_stats.csv` |
-| **`par.py`**             | Convert CSV → Parquet with Zstandard compression. Skips malformed lines, prompts before overwrite.                                                  | `python par.py -p mydata.csv -o mydata.parquet<br>`                                                    |
-| **`parjson.py`**         | Generate Hugging Face–style `dataset_infos.json` from a Parquet file. Reads metadata only (no full load).                                           | `python parjson.py -p train.parquet -o dataset_infos.json<br>`                                         |
+| File             | Purpose                                                                                                                                             | Example Usage                                                                                          |
+| ---------------- | --------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------ |
+| **`chains.sh`**  | Batch insert reply chains into PostgreSQL using recursive CTEs. Deduplicates, merges turns, and writes to `chains` table.                           | `chmod +x chains.sh && chains.sh` (**Edit `PGUSER` and `DB` inside script.**)                          |
+| **`stats.py`**   | Compute token counts and dataset statistics (tokens, turns, chars, words). Uses Hugging Face tokenizer with batch processing and Rich progress bar. | `python stats.py -p mydata.csv -m NousResearch/Hermes-3-Llama-3.1-8B -b 1024<br>` → `mydata_stats.csv` |
+| **`par.py`**     | Convert CSV → Parquet with Zstandard compression. Skips malformed lines, prompts before overwrite.                                                  | `python par.py -p mydata.csv -o mydata.parquet<br>`                                                    |
+| **`parjson.py`** | Generate Hugging Face–style `dataset_infos.json` from a Parquet file. Reads metadata only (no full load).                                           | `python parjson.py -p train.parquet -o dataset_infos.json<br>`                                         |
 
 ---
 
