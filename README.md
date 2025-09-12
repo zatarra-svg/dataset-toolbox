@@ -1,7 +1,6 @@
 # datasets-toolbox
 
-A small toolbox for preparing and analyzing conversational datasets.  
-Includes utilities for CSV ↔ Parquet conversion, dataset statistics, and  
+A small toolbox for preparing and analyzing conversational datasets. Includes utilities for CSV ↔ Parquet conversion, dataset statistics, and  
 batched chain insertion into PostgreSQL.
 
 ---
