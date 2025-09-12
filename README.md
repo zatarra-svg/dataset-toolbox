@@ -27,7 +27,8 @@ pip install -r requirements.txt
 
 | File                | Purpose                                                                                                                                             | Example Usage                                                                                      |
 | ------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
-| **`chains.sh`**     | Batch insert reply chains into PostgreSQL using recursive CTEs. Deduplicates, merges turns, and writes to `chains` table.                           | `chmod +x chains.sh && ./chains.sh` (**Edit `PGUSER` and `DB` inside script.**)                    |
+| **`chains.sh`**     | Batch insert reply chains into PostgreSQL using recursive CTEs. Deduplicates, merges turns, and writes to `chains` table.                           | `chmod +x chains.sh && ./chains.sh` (**Edit `PGUSER` and `DB` inside script.**)                  |
+| **`splitcsv.py`**   | Split a CSV into N parts, writing each to `<parent>/<N>/split.csv`. Uses Polars for fast IO.                                                        | `python splitcsv.py -p data/dump.csv -s 10`-                                                       |
 | **`combineall.py`** | Recursively combine multiple CSVs into one. Estimates safe chunksize by RAM, streams in batches, shows Rich progress bar.                           | `python combineall.py -p data_folder -o combined.csv --max-mem-gb 32`                              |
 | **`dropcols.py`**   | Remove identifier columns (`id`, `guild_id`, `channel_id`) from a CSV. Writes a new `_pure.csv` file alongside the input.                           | `python dropcols.py -p mydata.csv` → `mydata_pure.csv`                                             |
 | **`stats.py`**      | Compute token counts and dataset statistics (tokens, turns, chars, words). Uses Hugging Face tokenizer with batch processing and Rich progress bar. | `python stats.py -p mydata.csv -m NousResearch/Hermes-3-Llama-3.1-8B -b 1024` → `mydata_stats.csv` |
@@ -69,6 +70,33 @@ No more batches left. Exiting.
 ```
 
 > Configure `PGUSER` and `DB` at the top of the script for your environment.
+
+## `splitcsv.py` — Split CSV into N Parts
+
+Split a large CSV into evenly sized parts, writing each to `<parent>/<i>/split.csv`.  
+Uses Polars for fast IO and Rich printing for timing.
+
+**CLI**
+
+```text
+-p/--path              Input CSV path (with or without .csv, required)
+-s/--split-count       Number of parts to split into (default: 10)
+```
+
+**Usage**
+
+```bash
+python splitcsv.py -p data/dump.csv -s 10
+```
+
+**Output**
+
+```text
+Loaded 1,234,567 rows — splitting into 20 parts
+[1/20] Writing data/1/split.csv... done in 0.42s
+[2/20] Writing data/2/split.csv... done in 0.37s
+...
+```
 
 ### `combineall.py`
 
