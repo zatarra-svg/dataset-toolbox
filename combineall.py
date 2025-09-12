@@ -26,8 +26,6 @@ import argparse
 import pandas as pd
 from rich.console import Console
 from rich.progress import Progress, BarColumn, TimeElapsedColumn, TimeRemainingColumn, MofNCompleteColumn, TextColumn
-import psutil
-import math
 
 console = Console()
 

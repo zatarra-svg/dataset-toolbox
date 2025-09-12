@@ -36,7 +36,6 @@ from multiprocessing import Pool, cpu_count
 from rich.progress import Progress, SpinnerColumn, BarColumn, TextColumn, TimeElapsedColumn
 import psutil
 import os
-import csv
 
 chatml = True
 deephermes = False

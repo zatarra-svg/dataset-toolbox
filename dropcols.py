@@ -13,7 +13,6 @@ Returns:
 - Prints the path of the saved file after processing.  
 '''
 
-
 import polars as pl
 import argparse
 import os
