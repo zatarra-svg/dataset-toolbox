@@ -4,7 +4,7 @@
   <img src="https://raw.githubusercontent.com/mookiezi/site/refs/heads/main/Dataset-Toolbox-Header-E.png" alt="Dataset Cleaning Toolkit">
 </p>
 
-A dataset toolbox for preparing and analyzing conversational datasets, including CSV splitting, CSV → Parquet conversion, dataset statistics, dialogue-turn filtering, token and turn analysis, Parquet cleaning and sorting, HuggingFace–style metadata generation, and batched chain insertion into PostgreSQL — with Rich progress, multiprocessing, and 32 GB-RAM-friendly batching. Every stage is independant and CLI-driven.
+A dataset toolbox for preparing and analyzing conversational datasets, including CSV splitting, CSV → Parquet conversion, dataset statistics, dialogue-turn filtering, token and turn analysis, Parquet cleaning and sorting, HuggingFace–style metadata generation, and batched chain insertion into PostgreSQL — with Rich progress, multiprocessing, and 32 GB-RAM-friendly batching.
 
 ---
 
