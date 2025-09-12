@@ -70,8 +70,10 @@ Remove identifier columns from a CSV quickly using Polars.
 
 **Usage:**
 
-```bash
-python dropcols.py -p mydata.csv
+**Output:**
+
+```text
+Saved without id, guild_id, and channel_id → mydata_pure.csv
 ```
 
 ### `stats.py`
@@ -88,13 +90,10 @@ Compute token counts and basic stats for a CSV dataset.
 python stats.py -p mydata.csv -m NousResearch/Hermes-3-Llama-3.1-8B -b 1024
 ```
 
-```
-Output → `mydata_stats.csv`
-
 **Output:**
 
-```text
-Saved without id, guild_id, and channel_id → mydata_pure.csv
+```
+`mydata.csv` → `mydata_stats.csv`
 ```
 
 ### `filterturns.py`
@@ -305,7 +304,7 @@ transformers
 | **`dropcols.py`**    | Remove identifier columns (`id`, `guild_id`, `channel_id`) from a CSV. Writes a new `_pure.csv` file alongside the input.                           | `python dropcols.py -p mydata.csv` → `mydata_pure.csv`                                             |
 | **`stats.py`**       | Compute token counts and dataset statistics (tokens, turns, chars, words). Uses Hugging Face tokenizer with batch processing and Rich progress bar. | `python stats.py -p mydata.csv -m NousResearch/Hermes-3-Llama-3.1-8B -b 1024` → `mydata_stats.csv` |
 | **`tokens.py`**      | Generate detailed token statistics for a CSV (`text` col). Computes descriptive stats, histograms, assistant blocks, and saves a log file.          | `python tokens.py -p mydata.csv` → `mydata_tokenstats.txt`                                         |
-| **`turnstats.py`**   | Generate statistics on `<|im_start|>` blocks (turns) from CSV. Saves distribution table (`*_turn_table.txt`) and histogram (`*_turn_hist.png`).     | `python turnstats.py -p mydata.csv`                                                                |
+| **`turnstats.py`**   | Generate statistics on im_start blocks (turns) from CSV. Saves distribution table (`*_turn_table.txt`) and histogram (`*_turn_hist.png`).           | `python turnstats.py -p mydata.csv`                                                                |
 | **`par.py`**         | Convert CSV → Parquet with Zstandard compression. Skips malformed lines, prompts before overwrite.                                                  | `python par.py -p mydata.csv -o mydata.parquet`                                                    |
 | **`sortpar.py`**     | Rank dataset by turns and character count. Computes char bonus, effective turns, and composite score to sort rows.                                  | `python sort.py -p train.parquet` → `train_sort.parquet`                                           |
 | **`cleanpar.py`**    | Drop unnecessary columns (`assistant_turns`, `__index_level_0__`) from Parquet and restore row order. Writes `train.parquet`.                       | `python cleanpar.py -p mydata.parquet` → `train.parquet`                                           |
