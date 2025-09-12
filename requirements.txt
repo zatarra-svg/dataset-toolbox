@@ -1,0 +1,6 @@
+pandas
+polars
+pyarrow
+rich
+transformers
+matplotlib

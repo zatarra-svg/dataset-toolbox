@@ -1,4 +1,5 @@
 # dataset-toolbox
+
 <p align="center">
   <img src="https://raw.githubusercontent.com/mookiezi/site/refs/heads/main/Dataset-Toolbox-Header-E.png" alt="Dataset Cleaning Toolkit">
 </p>
@@ -138,17 +139,17 @@ python par.py -p mydata.csv -o mydata.parquet
 
 Rank a Parquet dataset by turns and character count.
 
--   Computes a `char_count` column from text length.  
--   Adds a capped character bonus (0–20) scaled between median and 95th percentile.  
--   Calculates an `effective_turns` value (max of turns vs. 5 + char bonus, capped at 25).  
--   Creates a composite `sort_score` = effective_turns × 1,000,000 + char_count.  
+-   Computes a `char_count` column from text length.
+-   Adds a capped character bonus (0–20) scaled between median and 95th percentile.
+-   Calculates an `effective_turns` value (max of turns vs. 5 + char bonus, capped at 25).
+-   Creates a composite `sort_score` = effective_turns × 1,000,000 + char_count.
 -   Sorts by this score and saves a new `_sort.parquet` file.
 
 **Usage:**
 
 ```bash
 python sort.py -p train.parquet
-````
+```
 
 **Output:**
 
@@ -160,16 +161,16 @@ Written sorted dataset to train_sort.parquet
 
 Clean a Parquet file by dropping extra columns and restoring original row order.
 
--   Drops `assistant_turns` and `__index_level_0__` if present.  
--   Attaches a temporary row index to preserve input order.  
--   Sorts back to the original order and removes the index.  
--   Saves as `train.parquet` with Zstandard compression.  
+-   Drops `assistant_turns` and `__index_level_0__` if present.
+-   Attaches a temporary row index to preserve input order.
+-   Sorts back to the original order and removes the index.
+-   Saves as `train.parquet` with Zstandard compression.
 
 **Usage:**
 
 ```bash
 python cleanpar.py -p mydata.parquet
-````
+```
 
 **Output:**
 
@@ -250,17 +251,17 @@ Histogram saved to: mydata_turn_hist.png
 
 Generate message-block statistics and a histogram for a CSV dataset.
 
--   Counts `<|im_start|>` occurrences per row to measure dialogue turns.  
--   Produces a full frequency distribution table (including zero-filled bins).  
--   Saves the table to `<base>_turn_table.txt`.  
--   Plots and saves a histogram as `<base>_turn_hist.png`.  
--   Prints the distribution table to the console.  
+-   Counts `<|im_start|>` occurrences per row to measure dialogue turns.
+-   Produces a full frequency distribution table (including zero-filled bins).
+-   Saves the table to `<base>_turn_table.txt`.
+-   Plots and saves a histogram as `<base>_turn_hist.png`.
+-   Prints the distribution table to the console.
 
 **Usage:**
 
 ```bash
 python turnstats.py -p mydata.csv
-````
+```
 
 **Output:**
 
@@ -288,30 +289,20 @@ Install dependencies with:
 pip install -r requirements.txt
 ```
 
-**requirements.txt**
-
-```txt
-pandas
-polars
-pyarrow
-rich
-transformers
-```
-
 ---
 
-| File                | Purpose                                                                                                                                             | Example Usage                                                                             |
-| -------------------  | --------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
-| **`chains.sh`**      | Batch insert reply chains into PostgreSQL using recursive CTEs. Deduplicates, merges turns, and writes to `chains` table.                           | `chmod +x chains.sh && ./chains.sh` (**Edit `PGUSER` and `DB` inside script.**)                  |
-| **`combineall.py`**  | Recursively combine multiple CSVs into one. Estimates safe chunksize by RAM, streams in batches, shows Rich progress bar.                           | `python combineall.py -p data_folder -o combined.csv --max-mem-gb 32`                              |
-| **`dropcols.py`**    | Remove identifier columns (`id`, `guild_id`, `channel_id`) from a CSV. Writes a new `_pure.csv` file alongside the input.                           | `python dropcols.py -p mydata.csv` → `mydata_pure.csv`                                             |
-| **`stats.py`**       | Compute token counts and dataset statistics (tokens, turns, chars, words). Uses Hugging Face tokenizer with batch processing and Rich progress bar. | `python stats.py -p mydata.csv -m NousResearch/Hermes-3-Llama-3.1-8B -b 1024` → `mydata_stats.csv` |
-| **`tokens.py`**      | Generate detailed token statistics for a CSV (`text` col). Computes descriptive stats, histograms, assistant blocks, and saves a log file.          | `python tokens.py -p mydata.csv` → `mydata_tokenstats.txt`                                         |
-| **`turnstats.py`**   | Generate statistics on im_start blocks (turns) from CSV. Saves distribution table (`*_turn_table.txt`) and histogram (`*_turn_hist.png`).           | `python turnstats.py -p mydata.csv`                                                                |
-| **`par.py`**         | Convert CSV → Parquet with Zstandard compression. Skips malformed lines, prompts before overwrite.                                                  | `python par.py -p mydata.csv -o mydata.parquet`                                                    |
-| **`sortpar.py`**     | Rank dataset by turns and character count. Computes char bonus, effective turns, and composite score to sort rows.                                  | `python sort.py -p train.parquet` → `train_sort.parquet`                                           |
-| **`cleanpar.py`**    | Drop unnecessary columns (`assistant_turns`, `__index_level_0__`) from Parquet and restore row order. Writes `train.parquet`.                       | `python cleanpar.py -p mydata.parquet` → `train.parquet`                                           |
-| **`parjson.py`**     | Generate Hugging Face–style `dataset_infos.json` from a Parquet file. Reads metadata only (no full load).                                           | `python parjson.py -p train.parquet -o dataset_infos.json`                                         |
+| File                | Purpose                                                                                                                                             | Example Usage                                                                                      |
+| ------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
+| **`chains.sh`**     | Batch insert reply chains into PostgreSQL using recursive CTEs. Deduplicates, merges turns, and writes to `chains` table.                           | `chmod +x chains.sh && ./chains.sh` (**Edit `PGUSER` and `DB` inside script.**)                    |
+| **`combineall.py`** | Recursively combine multiple CSVs into one. Estimates safe chunksize by RAM, streams in batches, shows Rich progress bar.                           | `python combineall.py -p data_folder -o combined.csv --max-mem-gb 32`                              |
+| **`dropcols.py`**   | Remove identifier columns (`id`, `guild_id`, `channel_id`) from a CSV. Writes a new `_pure.csv` file alongside the input.                           | `python dropcols.py -p mydata.csv` → `mydata_pure.csv`                                             |
+| **`stats.py`**      | Compute token counts and dataset statistics (tokens, turns, chars, words). Uses Hugging Face tokenizer with batch processing and Rich progress bar. | `python stats.py -p mydata.csv -m NousResearch/Hermes-3-Llama-3.1-8B -b 1024` → `mydata_stats.csv` |
+| **`tokens.py`**     | Generate detailed token statistics for a CSV (`text` col). Computes descriptive stats, histograms, assistant blocks, and saves a log file.          | `python tokens.py -p mydata.csv` → `mydata_tokenstats.txt`                                         |
+| **`turnstats.py`**  | Generate statistics on im_start blocks (turns) from CSV. Saves distribution table (`*_turn_table.txt`) and histogram (`*_turn_hist.png`).           | `python turnstats.py -p mydata.csv`                                                                |
+| **`par.py`**        | Convert CSV → Parquet with Zstandard compression. Skips malformed lines, prompts before overwrite.                                                  | `python par.py -p mydata.csv -o mydata.parquet`                                                    |
+| **`sortpar.py`**    | Rank dataset by turns and character count. Computes char bonus, effective turns, and composite score to sort rows.                                  | `python sort.py -p train.parquet` → `train_sort.parquet`                                           |
+| **`cleanpar.py`**   | Drop unnecessary columns (`assistant_turns`, `__index_level_0__`) from Parquet and restore row order. Writes `train.parquet`.                       | `python cleanpar.py -p mydata.parquet` → `train.parquet`                                           |
+| **`parjson.py`**    | Generate Hugging Face–style `dataset_infos.json` from a Parquet file. Reads metadata only (no full load).                                           | `python parjson.py -p train.parquet -o dataset_infos.json`                                         |
 
 ---
 
