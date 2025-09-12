@@ -1,6 +1,6 @@
-# datasets-toolbox
+# dataset-toolbox
 
-A small toolkit for preparing and analyzing conversational datasets, including CSV → Parquet conversion, dataset statistics, dialogue-turn filtering, token and turn analysis, Parquet cleaning and sorting, Hugging Face–style metadata generation, and batched chain insertion into PostgreSQL.
+A small toolbox for preparing and analyzing conversational datasets, including CSV → Parquet conversion, dataset statistics, dialogue-turn filtering, token and turn analysis, Parquet cleaning and sorting, Hugging Face–style metadata generation, and batched chain insertion into PostgreSQL.
 
 ---
 
