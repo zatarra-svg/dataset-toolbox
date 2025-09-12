@@ -281,13 +281,19 @@ Histogram saved to: mydata_turn_hist.png
 
 ---
 
-## Requirements
-
-Install dependencies with:
+## Install
 
 ```bash
+python -m venv venv
+source venv/bin/activate        # Windows: venv\Scripts\activate
+git clone https://github.com/mookiezi/dataset-toolbox
+cd dataset-toolbox
+pip install -U pip
 pip install -r requirements.txt
 ```
+
+> Python **3.10+** recommended.
+
 
 ---
 
