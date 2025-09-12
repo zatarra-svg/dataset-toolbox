@@ -1,3 +1,5 @@
+
+
 """
 This script converts a CSV file into a Parquet file with Zstandard compression.  
 It reads the input CSV, skipping any malformed lines, and writes the output  
