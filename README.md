@@ -1,4 +1,4 @@
-# dataset-toolbox
+# Dataset Toolbox
 
 <p align="center">
   <img src="https://raw.githubusercontent.com/mookiezi/site/refs/heads/main/Dataset-Toolbox-Header-E.png" alt="Dataset Cleaning Toolkit">
@@ -8,7 +8,37 @@ A dataset toolbox for preparing and analyzing conversational datasets, including
 
 ---
 
+## Install
+
+```bash
+python -m venv venv
+source venv/bin/activate        # Windows: venv\Scripts\activate
+git clone https://github.com/mookiezi/dataset-toolbox
+cd dataset-toolbox
+pip install -U pip
+pip install -r requirements.txt
+```
+
+> Python **3.10+** recommended.
+
+---
+
 ## Features
+
+| File                | Purpose                                                                                                                                             | Example Usage                                                                                      |
+| ------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
+| **`chains.sh`**     | Batch insert reply chains into PostgreSQL using recursive CTEs. Deduplicates, merges turns, and writes to `chains` table.                           | `chmod +x chains.sh && ./chains.sh` (**Edit `PGUSER` and `DB` inside script.**)                    |
+| **`combineall.py`** | Recursively combine multiple CSVs into one. Estimates safe chunksize by RAM, streams in batches, shows Rich progress bar.                           | `python combineall.py -p data_folder -o combined.csv --max-mem-gb 32`                              |
+| **`dropcols.py`**   | Remove identifier columns (`id`, `guild_id`, `channel_id`) from a CSV. Writes a new `_pure.csv` file alongside the input.                           | `python dropcols.py -p mydata.csv` → `mydata_pure.csv`                                             |
+| **`stats.py`**      | Compute token counts and dataset statistics (tokens, turns, chars, words). Uses Hugging Face tokenizer with batch processing and Rich progress bar. | `python stats.py -p mydata.csv -m NousResearch/Hermes-3-Llama-3.1-8B -b 1024` → `mydata_stats.csv` |
+| **`tokens.py`**     | Generate detailed token statistics for a CSV (`text` col). Computes descriptive stats, histograms, assistant blocks, and saves a log file.          | `python tokens.py -p mydata.csv` → `mydata_tokenstats.txt`                                         |
+| **`turnstats.py`**  | Generate statistics on im_start blocks (turns) from CSV. Saves distribution table (`*_turn_table.txt`) and histogram (`*_turn_hist.png`).           | `python turnstats.py -p mydata.csv`                                                                |
+| **`par.py`**        | Convert CSV → Parquet with Zstandard compression. Skips malformed lines, prompts before overwrite.                                                  | `python par.py -p mydata.csv -o mydata.parquet`                                                    |
+| **`sortpar.py`**    | Rank dataset by turns and character count. Computes char bonus, effective turns, and composite score to sort rows.                                  | `python sort.py -p train.parquet` → `train_sort.parquet`                                           |
+| **`cleanpar.py`**   | Drop unnecessary columns (`assistant_turns`, `__index_level_0__`) from Parquet and restore row order. Writes `train.parquet`.                       | `python cleanpar.py -p mydata.parquet` → `train.parquet`                                           |
+| **`parjson.py`**    | Generate Hugging Face–style `dataset_infos.json` from a Parquet file. Reads metadata only (no full load).                                           | `python parjson.py -p train.parquet -o dataset_infos.json`                                         |
+
+---
 
 ### `chains.sh`
 
@@ -281,38 +311,10 @@ Histogram saved to: mydata_turn_hist.png
 
 ---
 
-## Install
-
-```bash
-python -m venv venv
-source venv/bin/activate        # Windows: venv\Scripts\activate
-git clone https://github.com/mookiezi/dataset-toolbox
-cd dataset-toolbox
-pip install -U pip
-pip install -r requirements.txt
-```
-
-> Python **3.10+** recommended.
->
 > ## Cross-Platform Notes
 
 -   **Unix/macOS**: after `chmod +x script.py`, you can run `./script.py …` thanks to the shebang.
 -   **Windows**: run as `python script.py …`; shebang is ignored by default shell, but code is fully supported.
-
----
-
-| File                | Purpose                                                                                                                                             | Example Usage                                                                                      |
-| ------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
-| **`chains.sh`**     | Batch insert reply chains into PostgreSQL using recursive CTEs. Deduplicates, merges turns, and writes to `chains` table.                           | `chmod +x chains.sh && ./chains.sh` (**Edit `PGUSER` and `DB` inside script.**)                    |
-| **`combineall.py`** | Recursively combine multiple CSVs into one. Estimates safe chunksize by RAM, streams in batches, shows Rich progress bar.                           | `python combineall.py -p data_folder -o combined.csv --max-mem-gb 32`                              |
-| **`dropcols.py`**   | Remove identifier columns (`id`, `guild_id`, `channel_id`) from a CSV. Writes a new `_pure.csv` file alongside the input.                           | `python dropcols.py -p mydata.csv` → `mydata_pure.csv`                                             |
-| **`stats.py`**      | Compute token counts and dataset statistics (tokens, turns, chars, words). Uses Hugging Face tokenizer with batch processing and Rich progress bar. | `python stats.py -p mydata.csv -m NousResearch/Hermes-3-Llama-3.1-8B -b 1024` → `mydata_stats.csv` |
-| **`tokens.py`**     | Generate detailed token statistics for a CSV (`text` col). Computes descriptive stats, histograms, assistant blocks, and saves a log file.          | `python tokens.py -p mydata.csv` → `mydata_tokenstats.txt`                                         |
-| **`turnstats.py`**  | Generate statistics on im_start blocks (turns) from CSV. Saves distribution table (`*_turn_table.txt`) and histogram (`*_turn_hist.png`).           | `python turnstats.py -p mydata.csv`                                                                |
-| **`par.py`**        | Convert CSV → Parquet with Zstandard compression. Skips malformed lines, prompts before overwrite.                                                  | `python par.py -p mydata.csv -o mydata.parquet`                                                    |
-| **`sortpar.py`**    | Rank dataset by turns and character count. Computes char bonus, effective turns, and composite score to sort rows.                                  | `python sort.py -p train.parquet` → `train_sort.parquet`                                           |
-| **`cleanpar.py`**   | Drop unnecessary columns (`assistant_turns`, `__index_level_0__`) from Parquet and restore row order. Writes `train.parquet`.                       | `python cleanpar.py -p mydata.parquet` → `train.parquet`                                           |
-| **`parjson.py`**    | Generate Hugging Face–style `dataset_infos.json` from a Parquet file. Reads metadata only (no full load).                                           | `python parjson.py -p train.parquet -o dataset_infos.json`                                         |
 
 ---
 
